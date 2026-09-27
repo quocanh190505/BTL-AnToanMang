@@ -19,7 +19,7 @@ Hệ thống bảo mật đọc cấu hình nhạy cảm từ biến môi trư�
 | :--- | :---: | :--- | :--- |
 | `DB_PASSWORD` | **Có** | *Không có* | Mật khẩu tài khoản MySQL |
 | `DB_USERNAME` | Không | `root` | Tên người dùng MySQL |
-| `DB_URL` | Không | `jdbc:mysql://localhost:3306/managedocuments?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC` | JDBC URL kết nối MySQL |
+| `DB_URL` | Không | `jdbc:mysql://localhost:3306/managedocuments?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC` | JDBC URL kết nối MySQL |
 | `JWT_SIGNER_KEY` | Không | *(64 hex characters)* | Khóa bí mật ký JWT (tối thiểu 256 bits) |
 | `JWT_VALID_DURATION` | Không | `3600` | Thời hạn Access Token (giây) |
 | `JWT_REFRESHABLE_DURATION` | Không | `604800` | Thời hạn Refresh Token (giây) |
@@ -42,7 +42,7 @@ Base URL: `http://localhost:8080`
 
 ---
 
-##  ĐẶC TẢ API (API SPECIFICATION)
+## 📖 ĐẶC TẢ API (API SPECIFICATION)
 
 ### 1. Chuẩn Dữ Liệu & Xác Thực
 - **Định dạng dữ liệu:** `application/json` (trừ API upload file sử dụng `multipart/form-data` và download file trả về nhị phân `application/octet-stream`).

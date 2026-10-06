@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSafe - Quản Lý & Chia Sẻ Tài Liệu An Toàn</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css?v=1.2">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container-fluid px-lg-4">
+      <a class="navbar-brand d-flex align-items-center me-4" href="javascript:void(0)" onclick="showMainView('documents')">
+        <span class="brand-icon me-2">
+          <i class="bi bi-shield-lock-fill"></i>
+        </span>
+        <span>Doc<span style="color: #60a5fa !important;">Safe</span></span>
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <!-- Main Nav Links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" id="nav-link-documents" href="javascript:void(0)" onclick="showMainView('documents')">
+              <i class="bi bi-folder2-open me-1"></i> Kho Tài Liệu
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav-link-categories" href="javascript:void(0)" onclick="showMainView('categories')">
+              <i class="bi bi-tags me-1"></i> Danh Mục
+            </a>
+          </li>
+          <li class="nav-item d-none" id="nav-item-my-documents">
+            <a class="nav-link" href="javascript:void(0)" onclick="showMainView('documents'); Documents.setMode('my')">
+              <i class="bi bi-person-badge me-1"></i> Tài Liệu Của Tôi
+            </a>
+          </li>
+          <li class="nav-item d-none" id="nav-item-admin">
+            <a class="nav-link text-warning fw-semibold" id="nav-link-admin" href="javascript:void(0)" onclick="showMainView('admin')">
+              <i class="bi bi-shield-check me-1"></i> Quản Trị Hệ Thống
+            </a>
+          </li>
+        </ul>
+
+        <!-- Right Side: User Menu & Auth -->
+        <div class="d-flex align-items-center gap-2">
+          <!-- Quick Upload Button -->
+          <button class="btn btn-primary d-flex align-items-center shadow-sm" onclick="Documents.openUploadModal()">
+            <i class="bi bi-cloud-arrow-up-fill me-1"></i>
+            <span>Tải Lên Tài Liệu</span>
+          </button>
+
+          <!-- Guest: Login / Register Buttons -->
+          <div id="navbar-auth-actions" class="d-flex align-items-center gap-2 ms-2">
+            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModal">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Đăng Nhập
+            </button>
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#registerModal">
+              <i class="bi bi-person-plus me-1"></i> Đăng Ký
+            </button>
+          </div>
+
+          <!-- Authenticated: User Dropdown -->
+          <div id="navbar-user-menu" class="dropdown ms-2 d-none">
+            <button class="btn btn-dark d-flex align-items-center gap-2 py-1 px-2 rounded-pill border border-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar-circle" id="navbar-avatar">U</div>
+              <div class="text-start me-1 d-none d-sm-block">
+                <div class="small fw-bold text-white lh-1" id="navbar-username">User</div>
+                <div id="navbar-roles-badge" class="mt-1" style="font-size: 0.7rem;"></div>
+              </div>
+              <i class="bi bi-chevron-down text-muted small ms-1"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+              <li>
+                <a class="dropdown-item py-2" href="javascript:void(0)" onclick="openProfileModal()">
+                  <i class="bi bi-person-lines-fill me-2 text-primary"></i> Thông tin cá nhân
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item py-2" href="javascript:void(0)" onclick="new bootstrap.Modal(document.getElementById('changePasswordModal')).show()">
+                  <i class="bi bi-key-fill me-2 text-warning"></i> Đổi mật khẩu
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item py-2" href="javascript:void(0)" onclick="openSessionsModal()">
+                  <i class="bi bi-laptop me-2 text-info"></i> Quản lý phiên làm việc
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item py-2 text-danger" href="javascript:void(0)" onclick="Auth.logout()">
+                  <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <section class="hero-section">
+    <div class="container-fluid px-lg-5">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <span class="badge hero-badge px-3 py-2 rounded-pill mb-3">
+            <i class="bi bi-shield-lock me-1"></i> Bảo Mật &bull; Phân Quyền &bull; Lưu Trữ An Toàn
+          </span>
+          <h1 class="hero-title mb-2">Hệ Thống Quản Lý & Chia Sẻ Tài Liệu</h1>
+          <p class="hero-subtitle mb-0">
+            Truy cập, tìm kiếm và chia sẻ tài liệu an toàn với hệ thống bảo vệ cấp doanh nghiệp dựa trên JWT, mã hóa và kiểm soát quyền truy cập chi tiết.
+          </p>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block text-end">
+          <div class="d-inline-flex gap-3">
+            <div class="stat-box text-start">
+              <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                <i class="bi bi-file-earmark-text"></i>
+              </div>
+              <div>
+                <h4 class="mb-0 fw-bold" id="stat-total-docs" style="color: #0f172a !important;">0</h4>
+                <small class="text-muted">Tổng Tài Liệu</small>
+              </div>
+            </div>
+            <div class="stat-box text-start">
+              <div class="stat-icon bg-success bg-opacity-10 text-success">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <div>
+                <h4 class="mb-0 fw-bold" style="color: #0f172a !important;">100%</h4>
+                <small class="text-muted">An Toàn Bảo Mật</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="container-fluid px-lg-5 py-4 flex-grow-1">
+
+    <!-- ================= VIEW 1: DOCUMENTS EXPLORER ================= -->
+    <div id="view-documents">
+      <!-- Search & Filters Bar -->
+      <div class="filter-bar">
+        <div class="row g-3 align-items-center">
+          <!-- Keyword Search -->
+          <div class="col-md-4 col-sm-12">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" class="form-control border-start-0 ps-0" id="filter-keyword" placeholder="Tìm theo tiêu đề, mô tả tài liệu...">
+            </div>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="col-md-2 col-sm-6">
+            <select class="form-select" id="filter-category">
+              <option value="">-- Tất cả danh mục --</option>
+            </select>
+          </div>
+
+          <!-- Public / Private Filter -->
+          <div class="col-md-2 col-sm-6">
+            <select class="form-select" id="filter-public">
+              <option value="">-- Trạng thái chia sẻ --</option>
+              <option value="true">Chỉ công khai</option>
+              <option value="false">Chỉ riêng tư</option>
+            </select>
+          </div>
+
+          <!-- Sort Filter -->
+          <div class="col-md-2 col-sm-6">
+            <select class="form-select" id="filter-sort">
+              <option value="createdAt,desc">Mới nhất trước</option>
+              <option value="createdAt,asc">Cũ nhất trước</option>
+              <option value="title,asc">Tiêu đề (A &rarr; Z)</option>
+              <option value="title,desc">Tiêu đề (Z &rarr; A)</option>
+            </select>
+          </div>
+
+          <!-- Page size & View Mode Toggle -->
+          <div class="col-md-2 col-sm-6 d-flex align-items-center justify-content-md-end gap-2">
+            <select class="form-select form-select-sm" id="filter-page-size" style="width: auto;">
+              <option value="6">6 / trang</option>
+              <option value="9" selected>9 / trang</option>
+              <option value="18">18 / trang</option>
+              <option value="36">36 / trang</option>
+            </select>
+            <div class="btn-group btn-group-sm" role="group">
+              <button type="button" class="btn btn-outline-secondary active" id="btn-view-grid" onclick="Documents.setViewMode('grid')" title="Dạng lưới">
+                <i class="bi bi-grid-fill"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" id="btn-view-table" onclick="Documents.setViewMode('table')" title="Dạng bảng">
+                <i class="bi bi-list-ul"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode Nav (All Documents vs My Documents) -->
+        <div class="mt-3 pt-3 border-top d-flex align-items-center justify-content-between">
+          <ul class="nav nav-pills" id="doc-mode-pills">
+            <li class="nav-item">
+              <button class="nav-link active px-3 py-1 me-2" id="tab-docs-all" onclick="Documents.setMode('all')">
+                <i class="bi bi-globe me-1"></i> Tất cả tài liệu
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-3 py-1" id="tab-docs-my" onclick="Documents.setMode('my')">
+                <i class="bi bi-folder-symlink me-1"></i> Tài liệu của tôi
+              </button>
+            </li>
+          </ul>
+          <div id="docs-pagination-info" class="text-muted small"></div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="docs-loading" class="text-center py-5 d-none">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+          <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <div class="text-muted mt-3">Đang đồng bộ dữ liệu tài liệu...</div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="docs-empty-state" class="card card-custom-static text-center py-5 d-none">
+        <div class="card-body">
+          <i class="bi bi-folder-x display-3 text-muted mb-3 d-block"></i>
+          <h5 class="fw-bold text-dark">Không tìm thấy tài liệu phù hợp</h5>
+          <p class="text-muted mb-3">Hãy thử thay đổi từ khóa tìm kiếm hoặc bỏ chọn các bộ lọc danh mục/trạng thái.</p>
+          <button class="btn btn-primary btn-sm" onclick="Documents.openUploadModal()">
+            <i class="bi bi-cloud-upload me-1"></i> Tải lên tài liệu mới ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid View Container -->
+      <div id="docs-grid-view">
+        <div class="row" id="docs-grid-cards">
+          <!-- Dynamic Document Cards will be rendered here -->
+        </div>
+      </div>
+
+      <!-- Table View Container -->
+      <div id="docs-table-view" class="d-none">
+        <div class="card card-custom-static overflow-hidden mb-4">
+          <div class="table-responsive">
+            <table class="table table-custom table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Tài Liệu / Tên Tệp</th>
+                  <th>Danh Mục</th>
+                  <th>Phạm Vi</th>
+                  <th>Người Đăng</th>
+                  <th>Ngày Tải</th>
+                  <th class="text-end">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody id="docs-table-body">
+                <!-- Dynamic Rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination Toolbar -->
+      <div class="d-flex justify-content-center mt-4">
+        <nav aria-label="Documents pagination">
+          <ul class="pagination pagination-rounded" id="docs-pagination">
+            <!-- Dynamic pagination links -->
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 2: CATEGORIES ================= -->
+    <div id="view-categories" class="d-none">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h4 class="fw-bold text-dark mb-1">Danh Mục Tài Liệu</h4>
+          <p class="text-muted mb-0">Khám phá tài liệu được phân loại theo từng nhóm chuyên môn</p>
+        </div>
+        <div>
+          <button class="btn btn-outline-primary" onclick="Categories.loadCategories()">
+            <i class="bi bi-arrow-clockwise me-1"></i> Làm mới
+          </button>
+        </div>
+      </div>
+
+      <div class="row" id="category-cards-container">
+        <!-- Rendered Categories Cards -->
+      </div>
+    </div>
+
+    <!-- ================= VIEW 3: ADMIN MANAGEMENT DASHBOARD ================= -->
+    <div id="view-admin" class="d-none">
+      <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
+        <div>
+          <h3 class="fw-bold text-dark mb-1"><i class="bi bi-shield-shaded text-danger me-2"></i>Khu Vực Quản Trị Hệ Thống</h3>
+          <p class="text-muted mb-0">Quản lý người dùng, thiết lập vai trò và danh mục tài liệu toàn hệ thống</p>
+        </div>
+        <div class="d-flex gap-3">
+          <div class="stat-box py-2 px-3">
+            <div class="stat-icon bg-info bg-opacity-10 text-info" style="width: 38px; height: 38px; font-size: 1.1rem;">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+              <h5 class="mb-0 fw-bold" id="stat-total-users" style="color: #0f172a !important;">0</h5>
+              <small class="text-muted">Người Dùng</small>
+            </div>
+          </div>
+          <div class="stat-box py-2 px-3">
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning" style="width: 38px; height: 38px; font-size: 1.1rem;">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <div>
+              <h5 class="mb-0 fw-bold" id="stat-total-roles" style="color: #0f172a !important;">0</h5>
+              <small class="text-muted">Vai Trò</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Tabs Navigation -->
+      <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="admin-users-tab" data-bs-toggle="tab" data-bs-target="#admin-users-pane" type="button" role="tab">
+            <i class="bi bi-people me-1"></i> Quản Lý Người Dùng
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="admin-roles-tab" data-bs-toggle="tab" data-bs-target="#admin-roles-pane" type="button" role="tab">
+            <i class="bi bi-shield-check me-1"></i> Quản Lý Vai Trò (Roles)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="admin-permissions-tab" data-bs-toggle="tab" data-bs-target="#admin-permissions-pane" type="button" role="tab">
+            <i class="bi bi-key me-1"></i> Quyền Hạn (Permissions)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="admin-categories-tab" data-bs-toggle="tab" data-bs-target="#admin-categories-pane" type="button" role="tab">
+            <i class="bi bi-folder-fill me-1"></i> Quản Lý Danh Mục
+          </button>
+        </li>
+      </ul>
+
+      <!-- Admin Tabs Content -->
+      <div class="tab-content" id="adminTabsContent">
+        <!-- 1. Users Tab -->
+        <div class="tab-pane fade show active" id="admin-users-pane" role="tabpanel">
+          <div class="card card-custom-static p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Danh Sách Người Dùng</h5>
+              <button class="btn btn-primary btn-sm" onclick="Admin.openCreateUserModal()">
+                <i class="bi bi-person-plus-fill me-1"></i> Thêm Người Dùng Mới
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-custom table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tài Khoản / Tên</th>
+                    <th>Email</th>
+                    <th>Trạng Thái</th>
+                    <th>Vai Trò</th>
+                    <th>Ngày Tạo</th>
+                    <th class="text-end">Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-table-body">
+                  <!-- User rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Roles Tab -->
+        <div class="tab-pane fade" id="admin-roles-pane" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Danh Sách Vai Trò Trong Hệ Thống</h5>
+            <button class="btn btn-primary btn-sm" onclick="Admin.openCreateRoleModal()">
+              <i class="bi bi-shield-plus me-1"></i> Thêm Vai Trò Mới
+            </button>
+          </div>
+          <div class="row" id="admin-roles-container">
+            <!-- Role Cards -->
+          </div>
+        </div>
+
+        <!-- 3. Permissions Tab -->
+        <div class="tab-pane fade" id="admin-permissions-pane" role="tabpanel">
+          <div class="card card-custom-static p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Danh Sách Quyền Hạn Chi Tiết</h5>
+              <button class="btn btn-primary btn-sm" onclick="Admin.openCreatePermissionModal()">
+                <i class="bi bi-key-fill me-1"></i> Thêm Quyền Hạn Mới
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-custom table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên Quyền Hạn (Code)</th>
+                    <th>Mô Tả Chức Năng</th>
+                    <th class="text-end">Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-permissions-table-body">
+                  <!-- Permission rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Categories Admin Tab -->
+        <div class="tab-pane fade" id="admin-categories-pane" role="tabpanel">
+          <div class="card card-custom-static p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Quản Lý Danh Mục Tài Liệu</h5>
+              <button class="btn btn-primary btn-sm" onclick="Categories.openCreateModal()">
+                <i class="bi bi-folder-plus me-1"></i> Thêm Danh Mục Mới
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-custom table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên Danh Mục</th>
+                    <th>Mô Tả</th>
+                    <th class="text-end">Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-categories-table-body">
+                  <!-- Category rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container-fluid px-lg-5 text-center">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div>
+          <strong class="text-dark">DocSafe</strong> &copy; 2026 - Hệ thống lưu trữ và quản lý tài liệu bảo mật.
+        </div>
+        <div class="small text-muted">
+          <span>Spring Boot 3</span> &bull; <span>Spring Security JWT</span> &bull; <span>MySQL</span> &bull; <span>Bootstrap 5</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. LOGIN MODAL -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="loginModalLabel">
+            <i class="bi bi-box-arrow-in-right text-primary me-2"></i> Đăng Nhập
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="login-form">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label for="login-username" class="form-label fw-semibold">Tên đăng nhập</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" id="login-username" placeholder="Nhập username" required autofocus>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="login-password" class="form-label fw-semibold">Mật khẩu</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control" id="login-password" placeholder="Nhập mật khẩu" required>
+              </div>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="login-revoke-old">
+              <label class="form-check-label small text-muted" for="login-revoke-old">
+                Đăng xuất khỏi tất cả các thiết bị khác khi đăng nhập
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <span class="small me-auto text-muted">
+              Chưa có tài khoản? <a href="javascript:void(0)" onclick="switchToRegisterModal()" class="text-decoration-none fw-bold">Đăng ký ngay</a>
+            </span>
+            <button type="submit" class="btn btn-primary" id="login-btn">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Đăng Nhập
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. REGISTER MODAL -->
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="registerModalLabel">
+            <i class="bi bi-person-plus text-primary me-2"></i> Đăng Ký Tài Khoản
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="register-form">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label for="reg-fullname" class="form-label fw-semibold">Họ và tên</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                <input type="text" class="form-control" id="reg-fullname" placeholder="Nguyễn Văn A" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="reg-username" class="form-label fw-semibold">Tên đăng nhập</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" id="reg-username" placeholder="Tối thiểu 3 ký tự" required minlength="3">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="reg-email" class="form-label fw-semibold">Địa chỉ Email</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control" id="reg-email" placeholder="email@domain.com" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="reg-password" class="form-label fw-semibold">Mật khẩu</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control" id="reg-password" placeholder="Tối thiểu 6 ký tự" required minlength="6">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="reg-confirm-password" class="form-label fw-semibold">Xác nhận mật khẩu</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                <input type="password" class="form-control" id="reg-confirm-password" placeholder="Nhập lại mật khẩu" required minlength="6">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <span class="small me-auto text-muted">
+              Đã có tài khoản? <a href="javascript:void(0)" onclick="switchToLoginModal()" class="text-decoration-none fw-bold">Đăng nhập</a>
+            </span>
+            <button type="submit" class="btn btn-primary" id="register-btn">
+              <i class="bi bi-check2-circle me-1"></i> Hoàn Tất Đăng Ký
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PROFILE MODAL -->
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="profileModalLabel">
+            <i class="bi bi-person-lines-fill text-primary me-2"></i> Hồ Sơ Cá Nhân
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="profile-form">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Tên đăng nhập</label>
+              <input type="text" class="form-control bg-light" id="profile-username" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="profile-fullname" class="form-label fw-semibold">Họ và tên</label>
+              <input type="text" class="form-control" id="profile-fullname" required>
+            </div>
+            <div class="mb-3">
+              <label for="profile-email" class="form-label fw-semibold">Địa chỉ Email</label>
+              <input type="email" class="form-control" id="profile-email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Ngày khởi tạo tài khoản</label>
+              <input type="text" class="form-control bg-light" id="profile-created" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold d-block">Vai trò hiện tại</label>
+              <div id="profile-roles-container"></div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold d-block">Danh sách quyền hạn</label>
+              <div id="profile-perms-container" class="d-flex flex-wrap" style="max-height: 100px; overflow-y: auto;"></div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i> Lưu Thay Đổi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. CHANGE PASSWORD MODAL -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="changePasswordModalLabel">
+            <i class="bi bi-key-fill text-warning me-2"></i> Đổi Mật Khẩu
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="change-password-form">
+          <div class="modal-body p-4">
+            <div class="alert alert-info py-2 small mb-3">
+              <i class="bi bi-info-circle me-1"></i> Sau khi đổi mật khẩu thành công, toàn bộ phiên đăng nhập trên các thiết bị khác sẽ được tự động thu hồi.
+            </div>
+            <div class="mb-3">
+              <label for="pwd-old" class="form-label fw-semibold">Mật khẩu hiện tại</label>
+              <input type="password" class="form-control" id="pwd-old" required>
+            </div>
+            <div class="mb-3">
+              <label for="pwd-new" class="form-label fw-semibold">Mật khẩu mới</label>
+              <input type="password" class="form-control" id="pwd-new" required minlength="6">
+            </div>
+            <div class="mb-3">
+              <label for="pwd-confirm" class="form-label fw-semibold">Xác nhận mật khẩu mới</label>
+              <input type="password" class="form-control" id="pwd-confirm" required minlength="6">
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-warning">
+              <i class="bi bi-check-circle me-1"></i> Cập Nhật Mật Khẩu
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. SESSION MANAGEMENT MODAL -->
+  <div class="modal fade" id="sessionsModal" tabindex="-1" aria-labelledby="sessionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="sessionsModalLabel">
+            <i class="bi bi-laptop text-info me-2"></i> Quản Lý Phiên Đăng Nhập
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="card bg-light border p-3 mb-4">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-pc-display fs-3 text-primary me-3"></i>
+              <div>
+                <h6 class="mb-0 fw-bold">Thiết bị & Phiên hiện tại</h6>
+                <small class="text-success"><i class="bi bi-circle-fill" style="font-size: 0.6rem;"></i> Đang hoạt động</small>
+              </div>
+            </div>
+            <div class="small text-muted mt-2">
+              <strong>Tài khoản:</strong> <span id="session-user"></span><br>
+              <strong>Mã Token rút gọn:</strong> <code id="session-token-preview"></code>
+            </div>
+          </div>
+
+          <div class="d-grid gap-3">
+            <button type="button" class="btn btn-outline-warning py-2 text-start d-flex align-items-center justify-content-between" onclick="Auth.revokeOldSessions()">
+              <div>
+                <strong>Hủy phiên trên các thiết bị khác</strong>
+                <div class="small text-muted">Đăng xuất khỏi điện thoại, máy tính bảng hoặc trình duyệt khác</div>
+              </div>
+              <i class="bi bi-box-arrow-right fs-5"></i>
+            </button>
+
+            <button type="button" class="btn btn-outline-danger py-2 text-start d-flex align-items-center justify-content-between" onclick="Auth.revokeAllSessions()">
+              <div>
+                <strong>Đăng xuất khỏi tất cả thiết bị</strong>
+                <div class="small text-muted">Bao gồm cả thiết bị hiện tại này (yêu cầu đăng nhập lại)</div>
+              </div>
+              <i class="bi bi-power fs-5"></i>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. DOCUMENT UPLOAD & EDIT MODAL -->
+  <div class="modal fade" id="docFormModal" tabindex="-1" aria-labelledby="docModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="docModalTitle">
+            <i class="bi bi-cloud-upload me-2 text-primary"></i> Tải Lên Tài Liệu Mới
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="doc-form">
+          <input type="hidden" id="doc-form-id">
+          <div class="modal-body p-4">
+            <!-- File Drag & Drop (Only for Create) -->
+            <div class="mb-4" id="doc-file-wrapper">
+              <label class="form-label fw-semibold">Tập tin tài liệu <span class="text-danger">*</span></label>
+              <div class="dropzone-box" id="doc-dropzone">
+                <i class="bi bi-cloud-arrow-up display-4 text-primary d-block mb-2"></i>
+                <h6 class="fw-bold mb-1">Kéo và thả tệp tin vào đây, hoặc nhấn để chọn tệp</h6>
+                <p class="text-muted small mb-2">Hỗ trợ các định dạng PDF, DOCX, XLSX, ZIP, PNG, v.v. Tối đa 50MB.</p>
+                <div id="doc-selected-filename" class="badge bg-white text-dark border p-2">Chưa chọn tệp tin</div>
+              </div>
+              <input type="file" class="d-none" id="doc-file-input">
+            </div>
+
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="doc-form-title" class="form-label fw-semibold">Tiêu đề tài liệu <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="doc-form-title" placeholder="Ví dụ: Báo cáo an toàn mạng 2026" required>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="doc-form-category" class="form-label fw-semibold mb-0">Danh mục <span class="text-danger">*</span></label>
+                <button type="button" class="btn btn-sm btn-link text-decoration-none p-0 d-none" id="doc-btn-quick-cat" onclick="Categories.openCreateModal()">
+                  <i class="bi bi-plus-circle me-1"></i>+ Thêm danh mục
+                </button>
+              </div>
+              <select class="form-select" id="doc-form-category" required>
+                <!-- Populated dynamically -->
+              </select>
+              <div id="doc-form-category-warning" class="text-danger small mt-1 d-none">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> Hệ thống chưa có danh mục. Vui lòng liên hệ Admin hoặc khởi động lại backend để nạp danh mục mẫu.
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="doc-form-desc" class="form-label fw-semibold">Mô tả tóm tắt tài liệu</label>
+              <textarea class="form-control" id="doc-form-desc" rows="3" placeholder="Tóm tắt nội dung chính hoặc ghi chú..."></textarea>
+            </div>
+
+            <!-- Is Public Checkbox -->
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="doc-form-public" checked>
+              <label class="form-check-label fw-semibold" for="doc-form-public">
+                Công khai tài liệu này cho mọi người cùng xem và tải về
+              </label>
+              <div class="text-muted small">Nếu bỏ chọn, chỉ có bạn và Quản trị viên (Admin) mới có quyền truy cập.</div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+            <button type="submit" class="btn btn-primary" id="doc-submit-btn">
+              <i class="bi bi-cloud-upload me-1"></i> Tải Lên
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. DOCUMENT DETAIL MODAL -->
+  <div class="modal fade" id="docDetailModal" tabindex="-1" aria-labelledby="detail-doc-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="d-flex align-items-center">
+            <div id="detail-doc-icon" class="doc-file-icon me-3">
+              <i id="detail-doc-icon-i" class="bi"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold" id="detail-doc-title">Tên Tài Liệu</h5>
+              <div class="d-flex align-items-center gap-2 mt-1">
+                <span id="detail-doc-category" class="badge badge-cat"></span>
+                <span id="detail-doc-public"></span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6">
+              <div class="p-3 bg-light rounded border">
+                <small class="text-muted d-block mb-1">Tên tệp gốc:</small>
+                <div class="fw-bold text-break" id="detail-doc-filename">—</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 bg-light rounded border">
+                <small class="text-muted d-block mb-1">Người đăng:</small>
+                <div class="fw-bold" id="detail-doc-owner">—</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 bg-light rounded border">
+                <small class="text-muted d-block mb-1">Ngày tạo:</small>
+                <div class="fw-bold" id="detail-doc-created">—</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 bg-light rounded border">
+                <small class="text-muted d-block mb-1">Lần cập nhật cuối:</small>
+                <div class="fw-bold" id="detail-doc-updated">—</div>
+              </div>
+            </div>
+          </div>
+
+          <h6 class="fw-bold text-dark mb-2">Mô tả nội dung:</h6>
+          <div class="p-3 bg-light rounded border text-muted" id="detail-doc-desc" style="white-space: pre-wrap; min-height: 80px;">
+          </div>
+        </div>
+        <div class="modal-footer bg-light d-flex justify-content-between">
+          <div id="detail-doc-actions"></div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-success" id="detail-doc-download-btn">
+              <i class="bi bi-download me-1"></i> Tải Xuống Tệp Tin
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. CATEGORY MODAL (Create/Edit) -->
+  <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="categoryModalTitle">Thêm Danh Mục</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="category-form">
+          <input type="hidden" id="category-form-id">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label for="category-form-name" class="form-label fw-semibold">Tên danh mục <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="category-form-name" placeholder="Ví dụ: Công nghệ thông tin" required>
+            </div>
+            <div class="mb-3">
+              <label for="category-form-desc" class="form-label fw-semibold">Mô tả</label>
+              <textarea class="form-control" id="category-form-desc" rows="3" placeholder="Mô tả về danh mục này..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i> Lưu Danh Mục
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. ADMIN: USER MODAL (Create/Edit) -->
+  <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="userModalTitle">Người Dùng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="user-form">
+          <input type="hidden" id="user-form-id">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="user-form-username" class="form-label fw-semibold">Tên đăng nhập <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="user-form-username" required minlength="3">
+              </div>
+              <div class="col-md-6">
+                <label for="user-form-password" class="form-label fw-semibold">Mật khẩu</label>
+                <input type="password" class="form-control" id="user-form-password" minlength="6">
+                <small class="text-muted" id="user-password-help"></small>
+              </div>
+              <div class="col-md-6">
+                <label for="user-form-fullname" class="form-label fw-semibold">Họ và tên</label>
+                <input type="text" class="form-control" id="user-form-fullname">
+              </div>
+              <div class="col-md-6">
+                <label for="user-form-email" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="user-form-email" required>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="user-form-enabled" checked>
+                  <label class="form-check-label fw-semibold" for="user-form-enabled">Kích hoạt tài khoản</label>
+                </div>
+              </div>
+              <div class="col-12 border-top pt-3">
+                <label class="form-label fw-semibold d-block">Phân vai trò cho người dùng:</label>
+                <div id="user-role-checkboxes" class="p-3 bg-light rounded border"></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i> Lưu Người Dùng
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. ADMIN: ASSIGN ROLES MODAL -->
+  <div class="modal fade" id="assignRoleModal" tabindex="-1" aria-labelledby="assignRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="assignRoleModalLabel">
+            <i class="bi bi-shield-lock text-primary me-2"></i> Phân Vai Trò Người Dùng
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="assign-role-form">
+          <input type="hidden" id="assign-role-user-id">
+          <div class="modal-body p-4">
+            <p class="mb-3">Phân vai trò cho tài khoản: <strong class="text-primary" id="assign-role-username"></strong></p>
+            <div id="assign-role-checkboxes" class="p-3 bg-light rounded border"></div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg me-1"></i> Cập Nhật Vai Trò
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. ADMIN: ROLE MODAL (Create/Edit) -->
+  <div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="roleModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="roleModalTitle">Vai Trò</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="role-form">
+          <input type="hidden" id="role-form-id">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label for="role-form-name" class="form-label fw-semibold">Tên vai trò <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="role-form-name" placeholder="Ví dụ: EDITOR hoặc MANAGER" required>
+            </div>
+            <div class="mb-3">
+              <label for="role-form-desc" class="form-label fw-semibold">Mô tả vai trò</label>
+              <textarea class="form-control" id="role-form-desc" rows="2" placeholder="Mô tả chức trách của vai trò này..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold d-block">Danh sách quyền hạn gán cho vai trò này:</label>
+              <div id="role-permission-checkboxes" class="row p-3 bg-light rounded border" style="max-height: 250px; overflow-y: auto;"></div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i> Lưu Vai Trò
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. ADMIN: PERMISSION MODAL (Create) -->
+  <div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="permissionModalLabel">
+            <i class="bi bi-key text-primary me-2"></i> Thêm Quyền Hạn Mới
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="permission-form">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label for="perm-form-name" class="form-label fw-semibold">Mã quyền hạn <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="perm-form-name" placeholder="Ví dụ: READ_DOCUMENT, EXPORT_DATA" required>
+            </div>
+            <div class="mb-3">
+              <label for="perm-form-desc" class="form-label fw-semibold">Mô tả chi tiết</label>
+              <textarea class="form-control" id="perm-form-desc" rows="3" placeholder="Mô tả cụ thể hành động quyền hạn này cho phép thực hiện..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i> Lưu Quyền Hạn
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- External JS Libraries -->
+  <!-- Bootstrap 5 Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 for notifications -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Application JS Modules -->
+  <script src="js/api.js?v=1.2"></script>
+  <script src="js/auth.js?v=1.2"></script>
+  <script src="js/categories.js?v=1.2"></script>
+  <script src="js/documents.js?v=1.2"></script>
+  <script src="js/admin.js?v=1.2"></script>
+  <script src="js/app.js?v=1.2"></script>
+</body>
+</html>

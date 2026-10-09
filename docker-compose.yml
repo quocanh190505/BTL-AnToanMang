@@ -1,11 +1,13 @@
-# Lab CVE-2023-25690 — Apache reverse proxy (dính lỗi) + backend Spring Boot (cô lập) + MySQL
+# Toàn bộ hệ thống: Apache (reverse proxy) + Backend Spring Boot + MySQL
+# Tất cả chạy trong 1 docker-compose, dùng trực tiếp các thư mục backend/ và apache/ ở gốc project.
 #
 # Chạy:   docker compose up --build
-# Demo:   chỉ expose Apache ra cổng 8080 của host. Backend KHÔNG expose -> cô lập.
+# Truy cập hệ thống qua: http://localhost:8080 (Apache là cửa duy nhất vào hệ thống)
+# Backend KHÔNG expose cổng ra host -> chỉ gọi được qua Apache (mạng nội bộ labnet).
 #
-# Đổi phiên bản Apache để làm thí nghiệm đối chứng:
-#   APACHE_VERSION=2.4.55 docker compose up   -> DÍNH lỗi
-#   APACHE_VERSION=2.4.58 docker compose up    -> ĐÃ VÁ (smuggling thất bại)
+# Đổi phiên bản Apache để làm thí nghiệm CVE-2023-25690 (xem lab-cve-2023-25690/README.md):
+#   APACHE_VERSION=2.4.55 docker compose up   -> DÍNH lỗi (request smuggling)
+#   APACHE_VERSION=2.4.58 docker compose up    -> ĐÃ VÁ
 
 services:
   mysql:
@@ -18,33 +20,42 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
-    networks: [labnet]
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks: [appnet]
 
   backend:
     build:
-      context: ../backend             # thư mục backend (chứa pom.xml, src)
+      context: ./backend
       dockerfile: Dockerfile
     environment:
       DB_URL: "jdbc:mysql://mysql:3306/managedocuments?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
       DB_USERNAME: "root"
       DB_PASSWORD: "rootpass"
       JWT_SIGNER_KEY: "2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c"
+      FILE_UPLOAD_DIR: "uploads"
+    volumes:
+      - backend_uploads:/app/uploads
     depends_on:
       mysql:
         condition: service_healthy
     # KHÔNG có "ports:" -> backend chỉ gọi được từ trong mạng nội bộ (qua Apache).
-    networks: [labnet]
+    networks: [appnet]
 
   apache:
     image: "httpd:${APACHE_VERSION:-2.4.55}"
     volumes:
-      - ../apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
     ports:
       - "8080:80"                      # host:8080 -> Apache:80 (cửa duy nhất vào hệ thống)
     depends_on:
       - backend
-    networks: [labnet]
+    networks: [appnet]
 
 networks:
-  labnet:
+  appnet:
     driver: bridge
+
+volumes:
+  mysql_data:
+  backend_uploads:

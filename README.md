@@ -34,8 +34,16 @@ Hệ thống bảo mật đọc cấu hình nhạy cảm từ biến môi trư�
 ---
 
 ## 🚀 Khởi Chạy Ứng Dụng
+
+### Cách 1 — Docker (chạy cả Apache + Backend + MySQL cùng lúc)
+```bash
+docker compose up --build
+```
+Truy cập hệ thống qua Apache (cửa duy nhất): `http://localhost:8080`
+Backend không expose cổng ra ngoài, chỉ gọi được qua Apache.
+
+### Cách 2 — Chạy backend trực tiếp bằng Maven (cần tự có MySQL)
 ```powershell
-# Di chuyển vào thư mục backend rồi chạy qua Maven Wrapper:
 cd backend
 .\mvnw spring-boot:run
 ```
@@ -47,9 +55,10 @@ Base URL: `http://localhost:8080`
 
 ```
 .
-├── backend/                 # Mã nguồn Spring Boot (pom.xml, src, mvnw, uploads)
+├── docker-compose.yml       # Chạy chung Apache + Backend + MySQL bằng 1 lệnh
+├── backend/                 # Mã nguồn Spring Boot (pom.xml, src, mvnw, uploads, Dockerfile)
 ├── apache/                  # Cấu hình Apache httpd dùng làm reverse proxy
-└── lab-cve-2023-25690/      # Lab demo CVE-2023-25690 (docker-compose, Dockerfile tham chiếu backend/ & apache/)
+└── lab-cve-2023-25690/      # Tài liệu lab demo CVE-2023-25690 (dùng chung docker-compose.yml ở gốc)
 ```
 
 ---

@@ -35,12 +35,23 @@ Hệ thống bảo mật đọc cấu hình nhạy cảm từ biến môi trư�
 
 ## 🚀 Khởi Chạy Ứng Dụng
 
-### Cách 1 — Docker (chạy cả Apache + Backend + MySQL cùng lúc)
+### Cách 1 — Docker (chạy cả Apache + Backend + MySQL + Inspector cùng lúc)
 ```bash
 docker compose up --build
 ```
 Truy cập hệ thống qua Apache (cửa duy nhất): `http://localhost:8080`
-Backend không expose cổng ra ngoài, chỉ gọi được qua Apache.
+Backend không expose cổng ra ngoài, chỉ gọi được qua Inspector ↔ Apache.
+
+**Monitor traffic** (để quan sát CVE-2023-25690):
+```bash
+# Xem logs từ inspector container
+docker compose logs inspector -f
+
+# Hoặc đọc file log trực tiếp
+tail -f logs/inspector/inspector.log
+```
+
+Luồng request: `Client:8080 → Apache:80 → Inspector:8090 → Backend:8080`
 
 ### Cách 2 — Chạy backend trực tiếp bằng Maven (cần tự có MySQL)
 ```powershell
@@ -55,10 +66,14 @@ Base URL: `http://localhost:8080`
 
 ```
 .
-├── docker-compose.yml       # Chạy chung Apache + Backend + MySQL bằng 1 lệnh
-├── backend/                 # Mã nguồn Spring Boot (pom.xml, src, mvnw, uploads, Dockerfile)
-├── apache/                  # Cấu hình Apache httpd dùng làm reverse proxy
-└── lab-cve-2023-25690/      # Tài liệu lab demo CVE-2023-25690 (dùng chung docker-compose.yml ở gốc)
+├── docker-compose.yml          # mysql + backend + apache + inspector (chạy chung 1 lệnh)
+├── backend/                    # Mã nguồn Spring Boot (pom.xml, src, mvnw, uploads, Dockerfile)
+├── apache/                     # Cấu hình Apache httpd dùng làm reverse proxy
+├── http_inspector/             # HTTP Inspector (Python proxy) để monitor request/response
+│   ├── Dockerfile
+│   └── inspector.py
+├── logs/inspector/             # Logs từ inspector (ghi REQ/RSP để quan sát CVE-2023-25690)
+└── lab-cve-2023-25690/         # Tài liệu lab demo CVE-2023-25690 (dùng chung docker-compose.yml ở gốc)
 ```
 
 ---

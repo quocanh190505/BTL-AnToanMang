@@ -35,10 +35,22 @@ Hệ thống bảo mật đọc cấu hình nhạy cảm từ biến môi trư�
 
 ## 🚀 Khởi Chạy Ứng Dụng
 ```powershell
-# Chạy ứng dụng qua Maven Wrapper:
+# Di chuyển vào thư mục backend rồi chạy qua Maven Wrapper:
+cd backend
 .\mvnw spring-boot:run
 ```
 Base URL: `http://localhost:8080`
+
+---
+
+## 📁 Cấu Trúc Thư Mục
+
+```
+.
+├── backend/                 # Mã nguồn Spring Boot (pom.xml, src, mvnw, uploads)
+├── apache/                  # Cấu hình Apache httpd dùng làm reverse proxy
+└── lab-cve-2023-25690/      # Lab demo CVE-2023-25690 (docker-compose, Dockerfile tham chiếu backend/ & apache/)
+```
 
 ---
 

@@ -1,4 +1,4 @@
-# Build + run backend Spring Boot của nhóm (context = thư mục gốc project)
+# Build + run backend Spring Boot của nhóm (context = thư mục backend/)
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /src
 COPY pom.xml .

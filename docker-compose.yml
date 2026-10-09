@@ -12,6 +12,7 @@
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: managedocuments
@@ -28,6 +29,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: backend_spring
     environment:
       DB_URL: "jdbc:mysql://mysql:3306/managedocuments?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
       DB_USERNAME: "root"
@@ -36,16 +38,18 @@ services:
       FILE_UPLOAD_DIR: "uploads"
     volumes:
       - backend_uploads:/app/uploads
+    ports:
+      - "8080:8080"                  # Expose backend trực tiếp (để test + demo)
     depends_on:
       mysql:
         condition: service_healthy
-    # KHÔNG có "ports:" -> backend chỉ gọi được từ trong mạng nội bộ (qua inspector hoặc Apache).
     networks: [appnet]
 
   inspector:
     build:
       context: ./http_inspector
       dockerfile: Dockerfile
+    container_name: http_inspector
     environment:
       UPSTREAM_HOST: "backend"
       UPSTREAM_PORT: "8080"
@@ -60,10 +64,11 @@ services:
 
   apache:
     image: "httpd:${APACHE_VERSION:-2.4.55}"
+    container_name: apache_proxy
     volumes:
       - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
     ports:
-      - "8080:80"                      # host:8080 -> Apache:80 (cửa duy nhất vào hệ thống)
+      - "8000:80"                      # host:8000 -> Apache:80 (reverse proxy, có chặn Swagger)
     depends_on:
       - inspector
     networks: [appnet]

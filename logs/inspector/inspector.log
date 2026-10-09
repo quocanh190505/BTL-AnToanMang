@@ -1,0 +1,187 @@
+[2026-10-09T06:04:04.341907] REQ #1
+GET / HTTP/HTTP/1.1
+Host: inspector:8090
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Accept-Language: en-US,en;q=0.9
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate, br
+If-None-Match: "ce1d-65cc01b3dc8cf"
+If-Modified-Since: Thu, 01 Oct 2026 04:47:00 GMT
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:04:04.438692] RSP #1
+HTTP/1.1 505 
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 465
+Date: Fri, 09 Oct 2026 06:04:04 GMT
+
+<!doctype html><html lang="en"><head><title>HTTP Status 505 – HTTP Version Not Supported</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;bord
+================================================================================
+[2026-10-09T06:04:04.915195] REQ #2
+GET /favicon.ico HTTP/HTTP/1.1
+Host: inspector:8090
+sec-ch-ua-platform: "Windows"
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+sec-ch-ua-mobile: ?0
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Dest: image
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:04:04.921306] RSP #2
+HTTP/1.1 505 
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 465
+Date: Fri, 09 Oct 2026 06:04:04 GMT
+
+<!doctype html><html lang="en"><head><title>HTTP Status 505 – HTTP Version Not Supported</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;bord
+================================================================================
+[2026-10-09T06:07:23.957256] REQ #1
+GET / HTTP/HTTP/1.1
+Host: inspector:8090
+User-Agent: Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.9444
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:07:24.007159] RSP #1
+HTTP/1.1 505 
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 465
+Date: Fri, 09 Oct 2026 06:07:24 GMT
+
+<!doctype html><html lang="en"><head><title>HTTP Status 505 – HTTP Version Not Supported</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;bord
+================================================================================
+[2026-10-09T06:07:32.107904] REQ #2
+GET / HTTP/HTTP/1.1
+Host: inspector:8090
+User-Agent: Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.9444
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:07:32.113256] RSP #2
+HTTP/1.1 505 
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 465
+Date: Fri, 09 Oct 2026 06:07:32 GMT
+
+<!doctype html><html lang="en"><head><title>HTTP Status 505 – HTTP Version Not Supported</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;bord
+================================================================================
+[2026-10-09T06:14:06.269465] REQ #1
+GET / HTTP/HTTP/1.1
+Host: inspector:8090
+User-Agent: curl/8.17.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:14:06.316887] RSP #1
+HTTP/1.1 505 
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 465
+Date: Fri, 09 Oct 2026 06:14:06 GMT
+
+<!doctype html><html lang="en"><head><title>HTTP Status 505 – HTTP Version Not Supported</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;bord
+================================================================================
+[2026-10-09T06:15:01.923848] REQ #1
+GET / HTTP/HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.17.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:15:01.927025] RSP #1
+ERROR: [Errno 111] Connection refused
+================================================================================
+[2026-10-09T06:17:20.659250] REQ #2
+GET / HTTP/HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.17.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:17:20.722020] RSP #2
+HTTP/1.1 505 
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 465
+Date: Fri, 09 Oct 2026 06:17:20 GMT
+
+<!doctype html><html lang="en"><head><title>HTTP Status 505 – HTTP Version Not Supported</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;bord
+================================================================================
+[2026-10-09T06:18:21.341464] REQ #1
+GET /api/auth/my-info HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.17.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:18:21.508343] RSP #1
+HTTP/1.1 500 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 06:18:21 GMT
+Connection: close
+
+3f
+{"code":9999,"message":"Lỗi hệ thống chưa xác định"}
+0
+
+
+================================================================================
+[2026-10-09T06:19:00.007876] REQ #2
+POST /app/anything HTTP/1.1
+Host: localhost:8000
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Content-Length: 0
+Connection: Keep-Alive
+================================================================================

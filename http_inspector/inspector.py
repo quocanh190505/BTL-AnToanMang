@@ -82,7 +82,7 @@ class HTTPInspectorHandler(BaseHTTPRequestHandler):
         """Xử lý request, forward tới backend, ghi log"""
 
         # ===== LOG REQUEST =====
-        request_line = f"{self.command} {self.path} HTTP/{self.request_version}"
+        request_line = f"{self.command} {self.path} {self.request_version}"
         headers_str = "\n".join([f"{k}: {v}" for k, v in self.headers.items()])
 
         # Đọc body nếu có
@@ -108,7 +108,7 @@ class HTTPInspectorHandler(BaseHTTPRequestHandler):
             backend_sock.connect((UPSTREAM_HOST, UPSTREAM_PORT))
 
             # Gửi request tới backend
-            backend_request = f"{self.command} {self.path} HTTP/{self.request_version}\r\n"
+            backend_request = f"{self.command} {self.path} {self.request_version}\r\n"
 
             # Gửi headers (loại bỏ Host header, thêm lại với backend)
             for header, value in self.headers.items():

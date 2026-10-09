@@ -39,7 +39,23 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    # KHÔNG có "ports:" -> backend chỉ gọi được từ trong mạng nội bộ (qua Apache).
+    # KHÔNG có "ports:" -> backend chỉ gọi được từ trong mạng nội bộ (qua inspector hoặc Apache).
+    networks: [appnet]
+
+  inspector:
+    build:
+      context: ./http_inspector
+      dockerfile: Dockerfile
+    environment:
+      UPSTREAM_HOST: "backend"
+      UPSTREAM_PORT: "8080"
+      LISTEN_PORT: "8090"
+      LOG_FILE: "/logs/inspector.log"
+    volumes:
+      - ./logs/inspector:/logs
+    depends_on:
+      - backend
+    # KHÔNG expose port 8090 ra host -> chỉ Apache gọi qua network nội bộ
     networks: [appnet]
 
   apache:
@@ -49,7 +65,7 @@ services:
     ports:
       - "8080:80"                      # host:8080 -> Apache:80 (cửa duy nhất vào hệ thống)
     depends_on:
-      - backend
+      - inspector
     networks: [appnet]
 
 networks:

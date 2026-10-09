@@ -68,7 +68,9 @@ services:
     volumes:
       - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
     ports:
-      - "8000:80"                      # host:8000 -> Apache:80 (reverse proxy, có chặn Swagger)
+      - "8000:80"      # Protected/Normal: localhost:8000 -> Apache:80 (chặn Swagger, proxy /api/ only)
+      - "9080:8080"    # CVE-2023-25690 Lab 1: localhost:9080 -> Apache:8080 (RewriteRule, proxy ALL)
+      - "9081:8081"    # CVE-2023-25690 Lab 2: localhost:9081 -> Apache:8081 (ProxyPassMatch, proxy ALL)
     depends_on:
       - inspector
     networks: [appnet]

@@ -185,3 +185,210 @@ X-Forwarded-Server: localhost
 Content-Length: 0
 Connection: Keep-Alive
 ================================================================================
+[2026-10-09T06:20:00.092091] RSP #2
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 06:19:00 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+5b
+{"code":1003,"message":"Xác thực thất bại / Thông tin đăng nh
+================================================================================
+[2026-10-09T06:20:00.096737] REQ #3
+GET / HTTP/1.1
+Host: localhost:8000
+Cache-Control: max-age=0
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Accept-Language: en-US,en;q=0.9
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:21:42.678483] REQ #1
+GET / HTTP/1.1
+Host: localhost:8000
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Accept-Language: en-US,en;q=0.9
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:22:43.372564] RSP #1
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Last-Modified: Fri, 09 Oct 2026 05:07:52 GMT
+Accept-Ranges: bytes
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: en-US
+Content-Length: 52765
+Date: Fri, 09 Oct 2026 06:21:42 GMT
+Keep-Alive: timeout=60
+Connection
+================================================================================
+[2026-10-09T06:22:43.379595] REQ #2
+GET / HTTP/1.1
+Host: localhost:8000
+User-Agent: Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.9444
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:23:43.455288] RSP #2
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Last-Modified: Fri, 09 Oct 2026 05:07:52 GMT
+Accept-Ranges: bytes
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: en-US
+Content-Length: 52765
+Date: Fri, 09 Oct 2026 06:22:43 GMT
+Keep-Alive: timeout=60
+Connection
+================================================================================
+[2026-10-09T06:23:43.458534] REQ #3
+GET /favicon.ico HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+sec-ch-ua-mobile: ?0
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Dest: image
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T06:23:43.568059] RSP #3
+HTTP/1.1 500 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 06:23:43 GMT
+Connection: close
+
+3f
+{"code":9999,"message":"Lỗi hệ thống chưa xác định"}
+0
+
+
+================================================================================
+[2026-10-09T06:28:15.906344] REQ #1
+GET /v3/api-docs HTTP/1.1
+Host: localhost:9080
+User-Agent: curl/8.17.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:9080
+X-Forwarded-Server: localhost
+Connection: close
+================================================================================
+[2026-10-09T06:28:16.697513] RSP #1
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Content-Length: 20263
+Date: Fri, 09 Oct 2026 06:28:16 GMT
+Connection: close
+
+{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://backend:8080","
+================================================================================
+[2026-10-09T06:28:16.766308] REQ #2
+GET /v3/api-docs HTTP/1.1
+Host: localhost:9081
+User-Agent: curl/8.17.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:9081
+X-Forwarded-Server: localhost
+Connection: close
+================================================================================
+[2026-10-09T06:28:16.779429] RSP #2
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Content-Length: 20263
+Date: Fri, 09 Oct 2026 06:28:16 GMT
+Connection: close
+
+{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://backend:8080","
+================================================================================

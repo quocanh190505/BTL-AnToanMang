@@ -53,6 +53,8 @@ def log_message(msg_type, content):
 class HTTPInspectorHandler(BaseHTTPRequestHandler):
     """Handler cho mỗi HTTP request"""
 
+    protocol_version = "HTTP/1.1"
+    
     def log_message(self, format, *args):
         """Override để không spam logs"""
         pass
@@ -110,11 +112,15 @@ class HTTPInspectorHandler(BaseHTTPRequestHandler):
             # Gửi request tới backend
             backend_request = f"{self.command} {self.path} {self.request_version}\r\n"
 
-            # Gửi headers (loại bỏ Host header, thêm lại với backend)
+            # Gửi headers (loại bỏ Host header, thêm lại với backend)       
             for header, value in self.headers.items():
-                if header.lower() != 'host':
+                # Buộc backend đóng kết nối sau response để vòng recv() kết thúc.
+                # Không chuyển tiếp Connection của client.
+                if header.lower() not in ('host', 'connection'):
                     backend_request += f"{header}: {value}\r\n"
+
             backend_request += f"Host: {UPSTREAM_HOST}:{UPSTREAM_PORT}\r\n"
+            backend_request += "Connection: close\r\n"
             backend_request += "\r\n"
 
             # Gửi request line + headers

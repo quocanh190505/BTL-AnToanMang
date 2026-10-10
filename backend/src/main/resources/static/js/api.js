@@ -7,9 +7,25 @@ const API = (() => {
   // Cấu hình URL Backend:
   // - Nếu mở trực tiếp từ Spring Boot (port 8080) -> dùng relative path ''
   // - Nếu mở từ server khác (python port 5500, Apache port 80, Live Server...) -> trỏ về http://localhost:8080
-  const isBackend = window.location.port === '8080';
-  const BASE_URL = isBackend ? '' : 'http://localhost:8080';
-  console.log('[DocSafe API] Backend API Base URL:', BASE_URL || '(Same Origin :8080)');
+  const port = window.location.port;
+  let BASE_URL;
+
+  if (port === '8000' || port === '') {
+    // Frontend chạy qua Apache hoặc domain mặc định.
+    // API đi cùng origin: Apache -> Inspector -> Spring Boot.
+    BASE_URL = '';
+  } else if (port === '8080') {
+    // Mở frontend trực tiếp từ Spring Boot.
+    BASE_URL = '';
+  } else {
+    // Dev server khác: vẫn đi qua Apache để tránh CORS.
+    BASE_URL = 'http://localhost:8000';
+  }
+
+  console.log(
+    '[DocSafe API] Backend API Base URL:',
+    BASE_URL || '(Same Origin)'
+  );
 
   const getAccessToken = () => localStorage.getItem('access_token');
   const getRefreshToken = () => localStorage.getItem('refresh_token');

